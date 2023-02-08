@@ -5,8 +5,13 @@
         class="main-header__logo"
         src="../assets/images/logo.png"
         alt="logo"
+        @click="fetchProducts"
       />
-      <app-button :text="'Update Products'" class="main-header__button" />
+      <app-button
+        :text="'Update Products'"
+        class="main-header__button"
+        @clickButton="fetchProducts"
+      />
     </app-container>
   </header>
 </template>
@@ -17,6 +22,11 @@ import AppContainer from "@/components/AppContainer";
 export default {
   name: "AppHeader",
   components: { AppContainer, AppButton },
+  methods: {
+    fetchProducts() {
+      this.$emit("fetchProducts");
+    },
+  },
 };
 </script>
 <style scoped lang="scss">

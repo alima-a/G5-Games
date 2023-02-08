@@ -1,12 +1,8 @@
 <template>
   <app-container>
     <div ref="swiper" class="slider swiper">
-      <div class="swiper-wrapper">
-        <div
-          v-for="(picture, index) in pictures"
-          :key="index"
-          class="swiper-slide"
-        >
+      <div :key="slidesPerView" class="swiper-wrapper">
+        <div v-for="picture in pictures" :key="picture" class="swiper-slide">
           <img class="slider__img" :src="picture" alt="" />
         </div>
       </div>
@@ -41,22 +37,21 @@ export default {
   name: "AppSlider",
   components: { AppContainer },
   props: {
-    pictures: Array,
+    pictures: {
+      type: Array,
+      required: true,
+    },
   },
   data() {
     return {
-      windowWidth: 0,
+      slidesPerView: 3,
     };
   },
   methods: {
     handleResize() {
-      this.windowWidth = window.innerWidth;
+      this.slidesPerView = window.innerWidth > 834 ? 3 : 1;
     },
     initSwiper() {
-      // If you change the size of the browser window manually, the swiper will not update the number
-      // of slides, but in real cases where the site will be opened from different devices,
-      // the number of slides will always be correct. Thank you for your attention :)
-      const slidesPerView = this.windowWidth > 834 ? 3 : 1;
       new Swiper(this.$refs.swiper, {
         modules: [Navigation, Pagination],
         loop: true,
@@ -64,7 +59,7 @@ export default {
           el: ".swiper-pagination",
         },
         spaceBetween: 30,
-        slidesPerView: slidesPerView,
+        slidesPerView: this.slidesPerView,
         navigation: {
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev",
@@ -83,6 +78,12 @@ export default {
     window.removeEventListener("resize", this.handleResize);
   },
   mounted() {
+    this.initSwiper();
+  },
+  updated() {
+    // Reinitializes the swiper if the number of slides has changed
+    // This is necessary in order to make it more convenient to test
+    // the slider by manually resizing the browser window.
     this.initSwiper();
   },
 };
@@ -157,6 +158,9 @@ export default {
   &__arrow {
     height: 48px;
     width: 48px;
+    &_prev {
+      transform: rotate(180deg);
+    }
     @media (max-width: 1920px) {
       height: 40px;
       width: 40px;

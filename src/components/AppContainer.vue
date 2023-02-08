@@ -13,7 +13,7 @@ export default {
   height: 100%;
   max-width: 1386px;
   margin: 0 auto;
-  padding: 0 8px;
+  // padding: 0 8px;
   @media (max-width: 1920px) {
     max-width: 1290px;
   }
@@ -38,8 +38,5 @@ export default {
   @media (max-width: 375px) {
     max-width: 276px;
   }
-  //@media (min-width: 320px) and (max-width: 375px) {
-  //  max-width: 276px;
-  //}
 }
 </style>
